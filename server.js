@@ -6,7 +6,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import Cors from 'cors'
 
 // string de conexion, la contraseña será retirada de aqui en un proceso subsequente para que no vaya al git
-const stringConexion = '';
+const stringConexion = 'mongodb+srv://Tutor:DigitTutor@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 // mongodb+srv://<SuUruario>:<SuContrasena>@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
 
