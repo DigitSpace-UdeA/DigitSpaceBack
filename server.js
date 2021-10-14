@@ -6,7 +6,8 @@ import { MongoClient, ObjectId } from 'mongodb';
 import Cors from 'cors'
 
 // string de conexion, la contraseña será retirada de aqui en un proceso subsequente para que no vaya al git
-const stringConexion ='mongodb+srv://KaterinB:DigitKaterin@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'// mongodb+srv://<SuUruario>:<SuContrasena>@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+const stringConexion = 'mongodb+srv://Tutor:DigitTutor@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+// mongodb+srv://<SuUruario>:<SuContrasena>@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
 
 const client = new MongoClient(stringConexion,{
@@ -22,11 +23,14 @@ app.use(Cors())
 
 
 // se hace una ruta para GET o READ, y la ruta que se es /productos
-app.get('/moduloUsuarios2', (req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
-    console.log("alguien hizo get en la ruta /moduloUsuarios2")
+app.get('/productos', (req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
+    console.log("alguien hizo get en la ruta /productos")
     //en teoria, esto está llegando de una base de datos y aqui iria la consulta a la BD
-    
-    baseDeDatos.collection("Listado Usuarios").find({}).limit(50).toArray((err,result)=>{
+    //const productos = [
+    //    {name:'Silla mecedora', brand: 'Ikea', valorunit:'600000'},
+    //    {name:'Espejo esquinero', brand: 'Mikasa', valorunit:'350000'},
+    //];
+    baseDeDatos.collection("producto").find({}).limit(50).toArray((err,result)=>{
         if(err){
             res.status(500).send('Error consultando los productos'); // cuidado, aqui es res, el que le manda la información al front, no result
         }else{
@@ -38,7 +42,7 @@ app.get('/moduloUsuarios2', (req,res)=>{ // notese que aquí es donde se define 
 
 
 // se hace una ruta para POST o CREATE, y la ruta que se es /vehiculos/nuevo
-/*app.post("/productos/nuevo",(req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
+app.post("/productos/nuevo",(req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
     
     const datosProducto = req.body;
     console.log('llaves: ', Object.keys(datosProducto));
@@ -97,7 +101,7 @@ app.delete('/productos/eliminar', (req,res)=>{
             res.sendStatus(200);
         }
     });
-}) */
+})
 
 let baseDeDatos;
 
@@ -108,7 +112,7 @@ const main = ()=>{
             console.error('Error conectando la base de datos')
             return 'error';
         }
-        baseDeDatos = db.db('Usuarios') // esta base de datos aun no existe y portanto se crea
+        baseDeDatos = db.db('mobiliaria') // esta base de datos aun no existe y portanto se crea
         console.log('baseDeDatos exitosa')
         return app.listen(5000,()=>{
         console.log('escuchando puerto 5000')
