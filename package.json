@@ -1,0 +1,19 @@
+{
+  "name": "api-usuarios",
+  "version": "1",
+  "main": "index.js",
+  "repository": "https://github.com/DigitSpace-UdeA/DigitSpaceBack.git",
+  "author": "Yesica <yesicavillamil@gmail.com>",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server-user.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^4.1.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
