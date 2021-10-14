@@ -3,7 +3,9 @@
 /* const express = require('express'); */
 
 import Express from "express";
+import Cors from "cors"
 import { Collection, MongoClient } from "mongodb";
+
 
 const stringConexion =
     'mongodb+srv://YesicaV:DigitYesica@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
@@ -21,6 +23,7 @@ const client = new MongoClient(stringConexion,{
 const app = Express();
 
 app.use(Express.json());
+app.use(Cors());
 
 //creacion de rutas
 //*****************GET***************************** */
