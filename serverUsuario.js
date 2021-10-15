@@ -66,17 +66,17 @@ app.get('/moduloUsuarios2', (req,res)=>{ // notese que aquí es donde se define 
         res.sendStatus(500)
         
     }
-});
+});*/
 
-app.patch('/productos/editar',(req,res)=>{ // 
+app.patch('/editarUsuarios2',(req,res)=>{ // 
     const edicion = req.body; // se toma el contenido en el body del req, que es basicamente donde se colocan los parametros a buscar
     console.log(edicion);
-    const filtroProducto = {_id: new ObjectId(edicion.id)} // filtramos el producto segun el Id
+    const filtroListadoUsuario = {_id: new ObjectId(edicion.id)} // filtramos el producto segun el Id
     delete edicion.id // por mandar los ids por el body, tienen que borrarlos o el sistema se los va a meter a la base de datos
     const operacion = {
         $set:edicion,
     }
-    baseDeDatos.collection('producto').findOneAndUpdate(filtroProducto,operacion,{upsert:true, returnOriginal:true},(err,result)=>{  // el upsert sirve para crear una nueva funcion
+    baseDeDatos.collection('Listado Usuarios').findOneAndUpdate(filtroListadoUsuario,operacion,{upsert:true, returnOriginal:true},(err,result)=>{  // el upsert sirve para crear una nueva funcion
         if(err){
             console.error('error actualizando el producto" ', err)
             res.sendStatus(500)
@@ -87,9 +87,9 @@ app.patch('/productos/editar',(req,res)=>{ //
     }) 
 })
 
-app.delete('/productos/eliminar', (req,res)=>{
-    const filtroProducto = {_id: new ObjectId(req.body.id)}
-    baseDeDatos.collection('producto').deleteOne(filtroProducto,(err,result)=>{
+app.delete('/eliminarUsuario', (req,res)=>{
+    const filtroListadoUsuario = {_id: new ObjectId(req.body.id)}
+    baseDeDatos.collection('Listado Usuarios').deleteOne(filtroListadoUsuario,(err,result)=>{
         if(err){
             console.error(err);
             res.sendStatus(500);
@@ -97,7 +97,7 @@ app.delete('/productos/eliminar', (req,res)=>{
             res.sendStatus(200);
         }
     });
-}) */
+}) 
 
 let baseDeDatos;
 
