@@ -68,7 +68,7 @@ app.get('/moduloUsuarios2', (req,res)=>{ // notese que aquí es donde se define 
     }
 });*/
 
-app.patch('/editarUsuarios2',(req,res)=>{ // 
+app.patch('/moduloUsuarios2/editar/',(req,res)=>{ // 
     const edicion = req.body; // se toma el contenido en el body del req, que es basicamente donde se colocan los parametros a buscar
     console.log(edicion);
     const filtroListadoUsuario = {_id: new ObjectId(edicion.id)} // filtramos el producto segun el Id
@@ -87,7 +87,7 @@ app.patch('/editarUsuarios2',(req,res)=>{ //
     }) 
 })
 
-app.delete('/eliminarUsuario', (req,res)=>{
+app.delete('/moduloUsuarios2/eliminar/', (req,res)=>{
     const filtroListadoUsuario = {_id: new ObjectId(req.body.id)}
     baseDeDatos.collection('Listado Usuarios').deleteOne(filtroListadoUsuario,(err,result)=>{
         if(err){
