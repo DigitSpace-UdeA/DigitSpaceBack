@@ -22,7 +22,7 @@ app.use(Cors())
 
 
 // se hace una ruta para GET o READ, y la ruta que se es /productos
-app.get('/moduloUsuarios2', (req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
+app.get('/moduloUsuarios', (req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
     console.log("alguien hizo get en la ruta /moduloUsuarios2")
     //en teoria, esto está llegando de una base de datos y aqui iria la consulta a la BD
     
@@ -68,7 +68,7 @@ app.get('/moduloUsuarios2', (req,res)=>{ // notese que aquí es donde se define 
     }
 });*/
 
-app.patch('/moduloUsuarios2/editar/',(req,res)=>{ // 
+app.patch('/moduloUsuarios/editar/',(req,res)=>{ // 
     const edicion = req.body; // se toma el contenido en el body del req, que es basicamente donde se colocan los parametros a buscar
     console.log(edicion);
     const filtroListadoUsuario = {_id: new ObjectId(edicion.id)} // filtramos el producto segun el Id
@@ -87,7 +87,7 @@ app.patch('/moduloUsuarios2/editar/',(req,res)=>{ //
     }) 
 })
 
-app.delete('/moduloUsuarios2/eliminar/', (req,res)=>{
+app.delete('/moduloUsuarios/eliminar/', (req,res)=>{
     const filtroListadoUsuario = {_id: new ObjectId(req.body.id)}
     baseDeDatos.collection('Listado Usuarios').deleteOne(filtroListadoUsuario,(err,result)=>{
         if(err){
