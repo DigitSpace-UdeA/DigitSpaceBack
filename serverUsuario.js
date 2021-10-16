@@ -6,7 +6,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import Cors from 'cors'
 
 // string de conexion, la contraseña será retirada de aqui en un proceso subsequente para que no vaya al git
-const stringConexion ='mongodb+srv://KaterinB:DigitKaterin@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'// mongodb+srv://<SuUruario>:<SuContrasena>@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+const stringConexion ='mongodb+srv://Tutor:DigitTutor@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'// mongodb+srv://<SuUruario>:<SuContrasena>@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
 
 
 const client = new MongoClient(stringConexion,{
@@ -23,7 +23,7 @@ app.use(Cors())
 
 // se hace una ruta para GET o READ, y la ruta que se es /productos
 app.get('/moduloUsuarios', (req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
-    console.log("alguien hizo get en la ruta /moduloUsuarios2")
+    console.log("alguien hizo get en la ruta /moduloUsuarios")
     //en teoria, esto está llegando de una base de datos y aqui iria la consulta a la BD
     
     baseDeDatos.collection("Listado Usuarios").find({}).limit(50).toArray((err,result)=>{
