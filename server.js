@@ -16,7 +16,6 @@ const client = new MongoClient(stringConexion,{
 });
 
 
-
 const app = Express();
 app.use(Express.json());
 app.use(Cors())
@@ -41,7 +40,7 @@ app.get('/productos', (req,res)=>{ // notese que aquí es donde se define la rut
 });
 
 
-// se hace una ruta para POST o CREATE, y la ruta que se es /vehiculos/nuevo
+// se hace una ruta para POST o CREATE, y la ruta que se es /productos/nuevo
 app.post("/productos/nuevo",(req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
     
     const datosProducto = req.body;
