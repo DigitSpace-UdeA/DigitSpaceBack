@@ -66,7 +66,7 @@ app.post("/productos/nuevo",(req,res)=>{ // notese que aquí es donde se define 
             res.sendStatus(500)
         }
     } catch {
-        res.sendStatus(500)
+    res.sendStatus(500)
         
     }
 });
@@ -102,6 +102,54 @@ app.delete('/productos/eliminar', (req,res)=>{
     });
 })
 
+
+// se hace una ruta para GET o READ, y la ruta que se es /productos
+app.get('/moduloUsuarios', (req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
+    console.log("alguien hizo get en la ruta /moduloUsuarios")
+    //en teoria, esto está llegando de una base de datos y aqui iria la consulta a la BD
+    
+    baseDeDatos.collection("Usuarios").find({}).limit(50).toArray((err,result)=>{
+        if(err){
+            res.status(500).send('Error consultando los productos'); // cuidado, aqui es res, el que le manda la información al front, no result
+        }else{
+            res.json(result);
+        }
+    }); //esto convierte el valor de la base de datos en formato tipo JSON
+    
+});
+
+app.patch('/moduloUsuarios/editar/',(req,res)=>{ // 
+    const edicion = req.body; // se toma el contenido en el body del req, que es basicamente donde se colocan los parametros a buscar
+    console.log(edicion);
+    const filtroListadoUsuario = {_id: new ObjectId(edicion.id)} // filtramos el producto segun el Id
+    delete edicion.id // por mandar los ids por el body, tienen que borrarlos o el sistema se los va a meter a la base de datos
+    const operacion = {
+        $set:edicion,
+    }
+    baseDeDatos.collection('Usuarios').findOneAndUpdate(filtroListadoUsuario,operacion,{upsert:true, returnOriginal:true},(err,result)=>{  // el upsert sirve para crear una nueva funcion
+        if(err){
+            console.error('error actualizando el producto" ', err)
+            res.sendStatus(500)
+        }else{
+            console.log("actualizado con exito")
+            res.sendStatus(200)
+        }
+    }) 
+})
+
+app.delete('/moduloUsuarios/eliminar/', (req,res)=>{
+    const filtroListadoUsuario = {_id: new ObjectId(req.body.id)}
+    baseDeDatos.collection('Usuarios').deleteOne(filtroListadoUsuario,(err,result)=>{
+        if(err){
+            console.error(err);
+            res.sendStatus(500);
+        }else{
+            res.sendStatus(200);
+        }
+    });
+}) 
+
+
 let baseDeDatos;
 
 const main = ()=>{
@@ -114,9 +162,11 @@ const main = ()=>{
         baseDeDatos = db.db('mobiliaria') // esta base de datos aun no existe y portanto se crea
         console.log('baseDeDatos exitosa')
         return app.listen(5000,()=>{
-        console.log('escuchando puerto 5000')
+            console.log('escuchando puerto 5000')
     });
 });
 };
 
 main();
+
+
