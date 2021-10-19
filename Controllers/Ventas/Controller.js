@@ -19,9 +19,13 @@ const crearVentas = async (datosVenta, callback) => {
     }
 };
 
-const editarVentas = async (edicion, callback) => {
-    const filtroVenta = { _id: new ObjectId(edicion.id) };
-    delete edicion.id;
+const consultarVentaIndiv = async (id, callback) => {
+  const basedeDatos = getDB();
+  await basedeDatos.collection("Ventas").findOne({ _id: new ObjectId(id) }, callback);
+};
+
+const editarVentas = async (id, edicion, callback) => {
+    const filtroVenta = { _id: new ObjectId(id) };
     const operacion = {
         $set: edicion,
     };
@@ -43,4 +47,4 @@ const eliminarVentas = async (id, callback) => {
 };
 
 
-export { queryAllSales, crearVentas, editarVentas, eliminarVentas };
+export { queryAllSales, crearVentas, editarVentas, eliminarVentas, consultarVentaIndiv };
