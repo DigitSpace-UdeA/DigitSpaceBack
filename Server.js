@@ -1,16 +1,13 @@
 import Express from 'express';
 import { MongoClient, ObjectId } from 'mongodb';
 import Cors from "cors";
+import dotenv from 'dotenv';
+import conectarBD from './db/db';
 
-const stringConexion =
-  "mongodb+srv://Tutor:DigitTutor@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-
-const client = new MongoClient(stringConexion, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+dotenv.config({ path: './.env' });
 
 const app = Express();
+
 app.use(Express.json());
 app.use(Cors());
 
@@ -92,20 +89,10 @@ app.delete("/ventas/eliminar", (req, res) => {
     });
 });
 
-
-let conexion;
-
 const main = () => {    
-    client.connect((err, db) => {
-        if (err) {
-            console.log("Error conectando a la base de datos");
-        }
-        conexion = db.db("mobiliaria");
-        console.log("Conexión exitosa.");
-        return app.listen(5000, () => {
-            console.log("Escuchando puerto 5000.");
-        });
+    app.listen(process.env.PORT, () => {
+        console.log(`Escuchando puerto ${process.env.PORT}`);
     });
 };
 
-main();
+conectarBD(main);
