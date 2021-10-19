@@ -1,7 +1,7 @@
 import Express from "express";
 import { getDB } from "../../db/db.js";
 import { MongoClient, ObjectId } from "mongodb";
-import { crearVehiculo, queryAllSales } from "../../Controllers/Ventas/Controller.js";
+import { crearVentas, editarVentas, eliminarVentas, queryAllSales } from "../../Controllers/Ventas/Controller.js";
 
 const rutasVentas = Express.Router();
 
@@ -19,7 +19,15 @@ rutasVentas.route("/ventas").get((req, res) => {
 });
 
 rutasVentas.route("/ventas/nueva").post((req, res) => {
-    crearVehiculo(req.body, genericCallback(res));
+    crearVentas(req.body, genericCallback(res));
+});
+
+rutasVentas.route("/ventas/editar").patch((req, res) => {
+    editarVentas(req.body, genericCallback(res));
+});
+
+rutasVentas.route("/ventas/eliminar").delete((req, res) => {
+  eliminarVentas(req.body.id, genericCallback(res));
 });
 
 export default rutasVentas;
