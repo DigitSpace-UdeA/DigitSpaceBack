@@ -9,7 +9,7 @@ const client = new MongoClient(stringConexion, {
   useUnifiedTopology: true,
 });
 
-let conexion;
+let baseDeDatos;
 
 const conectarBD = (callback) => {
     client.connect((err, db) => {
@@ -17,10 +17,14 @@ const conectarBD = (callback) => {
             console.error("Error conectando a la base de datos");
             return 'error'
         }
-        conexion = db.db("mobiliaria");
+        baseDeDatos = db.db("mobiliaria");
         console.log("Conexión exitosa.");
-        return callback;
+        return callback();
     });
 };
 
-export { conectarBD };
+const getDB = () => {
+    return baseDeDatos;
+};
+
+export { conectarBD, getDB };

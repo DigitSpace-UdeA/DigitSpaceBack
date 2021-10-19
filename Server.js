@@ -2,7 +2,7 @@ import Express from 'express';
 import { MongoClient, ObjectId } from 'mongodb';
 import Cors from "cors";
 import dotenv from 'dotenv';
-import conectarBD from './db/db';
+import { conectarBD, getDB } from './db/db.js';
 
 dotenv.config({ path: './.env' });
 
@@ -13,7 +13,8 @@ app.use(Cors());
 
 app.get('/ventas', (req, res) => {
     console.log("Se consulta la base de datos que está en la ruta /ventas");
-    conexion.collection("Ventas").find({}).limit(50).toArray((err, result) => {
+    const basedeDatos = getDB();
+    basedeDatos.collection("Ventas").find({}).limit(50).toArray((err, result) => {
         if (err) {
             res.sendStatus(500).send("Error consultando las ventas.");
         } else {
@@ -32,7 +33,8 @@ app.post('/ventas/nueva', (req, res) => {
             Object.keys(datosVenta).includes("brand") &&
             Object.keys(datosVenta).includes("price")
         ) {
-            conexion.collection("Ventas").insertOne(datosVenta, (err, result) => {
+            const basedeDatos = getDB();
+            basedeDatos.collection("Ventas").insertOne(datosVenta, (err, result) => {
                 if (err) {
                     console.log(err);
                     res.sendStatus(500);
@@ -58,7 +60,8 @@ app.patch("/ventas/editar", (req, res) => {
     const operacion = {
       $set: edicion,
     };
-    conexion
+    const basedeDatos = getDB();
+    basedeDatos
       .collection("Ventas")
       .findOneAndUpdate(
         filtroVenta,
@@ -78,7 +81,8 @@ app.patch("/ventas/editar", (req, res) => {
 
 app.delete("/ventas/eliminar", (req, res) => {
     const filtroVenta = { _id: new ObjectId(req.body.id) };
-    conexion.collection("Ventas").deleteOne(filtroVenta, (err, result) => {
+    const basedeDatos = getDB();
+    basedeDatos.collection("Ventas").deleteOne(filtroVenta, (err, result) => {
         if (err) {
             console.error(err);
             res.sendStatus(500);
