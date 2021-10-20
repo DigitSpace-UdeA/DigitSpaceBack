@@ -8,6 +8,9 @@
   "scripts": {
     "start": "nodemon Server.js"
   },
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
