@@ -4,7 +4,7 @@
 import Express from 'express';
 import { MongoClient, ObjectId } from 'mongodb';
 import Cors from 'cors'
- 
+
 //-------------Oauth-------------------
 import jwt from 'express-jwt';
 import jwks from 'jwks-rsa';
@@ -13,6 +13,7 @@ import jwks from 'jwks-rsa';
 // string de conexion, la contraseña será retirada de aqui en un proceso subsequente para que no vaya al git
 const stringConexion = 'mongodb+srv://Tutor:DigitTutor@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 // mongodb+srv://<SuUruario>:<SuContrasena>@proyectodigitspace.hfib8.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+
 
 const client = new MongoClient(stringConexion,{
     useNewUrlParser:true,
@@ -25,11 +26,12 @@ const app = Express();
 app.use(Express.json());
 app.use(Cors())
 
+
 var jwtCheck = jwt({
     secret: jwks.expressJwtSecret({
         cache: true,
         rateLimit: true,
-        jwksRequestsPerMinute: 5,
+        jwksRequestsPerMinute:  5,
         jwksUri: 'https://digit-space.us.auth0.com/.well-known/jwks.json'
   }),
   audience: 'api-autenticacion-digitspace',
