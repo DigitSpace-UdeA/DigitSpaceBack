@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { conectarBD, getDB } from './db/db.js';
 import rutasVentas from './Views/Ventas/Rutas.js';
 import rutasProductos from './Views/Productos/Rutas.js';
+import rutasUsuarios from "./Views/Usuarios/Rutas.js";
 
 //-------------Oauth-------------------
 import jwt from 'express-jwt';
@@ -38,6 +39,8 @@ app.use(jwtCheck);
 // Importar las rutas del CRUD de Ventas
 app.use(rutasVentas);
 app.use(rutasProductos);
+app.use(rutasUsuarios);
+
 
 const main = () => {    
     app.listen(process.env.PORT, () => {
