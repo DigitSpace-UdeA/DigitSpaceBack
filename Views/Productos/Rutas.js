@@ -1,7 +1,5 @@
 import Express from "express";
-import { getDB } from "../../db/db.js";
-import { MongoClient, ObjectId } from "mongodb";
-import { crearProductos, editarProductos, eliminarProductos, queryAllProducts } from "../../Controllers/Productos/Controller.js";
+import { crearProductos, queryAllProducts } from "../../Controllers/Productos/Controller.js";
 
 
 const rutasProductos = Express.Router();
@@ -21,14 +19,6 @@ rutasProductos.route("/productos").get((req, res) => {
 
 rutasProductos.route("/productos/nuevo").post((req, res) => {
   crearProductos(req.body, genericCallback(res));
-});
-
-rutasProductos.route("/productos/editar").patch((req, res) => {
-  editarProductos(req.body, genericCallback(res));
-});
-
-rutasProductos.route("/productos/eliminar").delete((req, res) => {
-  eliminarProductos(req, genericCallback(res));
 });
 
 export default rutasProductos;
