@@ -122,6 +122,48 @@ app.delete('/moduloUsuarios/eliminar/', (req,res)=>{
     });
 })
 
+app.patch("/ventas/editar", (req, res) => {
+  //
+  const edicion = req.body; // se toma el contenido en el body del req, que es basicamente donde se colocan los parametros a buscar
+  const baseDeDatos = getDB();
+  console.log(edicion);
+  const filtroVenta = { _id: new ObjectId(edicion.id) }; // filtramos el producto segun el Id
+  delete edicion.id; // por mandar los ids por el body, tienen que borrarlos o el sistema se los va a meter a la base de datos
+  const operacion = {
+    $set: edicion,
+  };
+  baseDeDatos
+    .collection("Ventas")
+    .findOneAndUpdate(
+      filtroVenta,
+      operacion,
+      { upsert: true, returnOriginal: true },
+      (err, result) => {
+        // el upsert sirve para crear una nueva funcion
+        if (err) {
+          console.error('Error actualizando la venta." ', err);
+          res.sendStatus(500);
+        } else {
+          console.log("Venta actualizada con éxito.");
+          res.sendStatus(200);
+        }
+      }
+    );
+});
+
+app.delete("/ventas/eliminar", (req, res) => {
+  const baseDeDatos = getDB();
+  const filtroVenta = { _id: new ObjectId(req.body.id) };
+  baseDeDatos.collection("Ventas").deleteOne(filtroVenta, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.sendStatus(500);
+    } else {
+      res.sendStatus(200);
+    }
+  });
+});
+
 const main = () => {    
     app.listen(process.env.PORT, () => {
         console.log(`Escuchando puerto ${process.env.PORT}`);

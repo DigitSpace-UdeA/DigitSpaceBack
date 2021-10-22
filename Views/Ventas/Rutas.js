@@ -1,7 +1,5 @@
 import Express from "express";
-import { getDB } from "../../db/db.js";
-import { MongoClient, ObjectId } from "mongodb";
-import { consultarVentaIndiv, crearVentas, editarVentas, eliminarVentas, queryAllSales } from "../../Controllers/Ventas/Controller.js";
+import { crearVentas, queryAllSales } from "../../Controllers/Ventas/Controller.js";
 
 const rutasVentas = Express.Router();
 
@@ -19,20 +17,7 @@ rutasVentas.route("/ventas").get((req, res) => {
 });
 
 rutasVentas.route("/ventas/nueva").post((req, res) => {
-    crearVentas(req.body, genericCallback(res));
-});
-
-rutasVentas.route("/ventas/:id").get((req, res) => {
-  console.log("Se consulta una única venta por su respectivo id.");
-  consultarVentaIndiv(req.params.id, genericCallback(res));
-});
-
-rutasVentas.route("/ventas/:id").patch((req, res) => {
-    editarVentas(req.params.id, req.body, genericCallback(res));
-});
-
-rutasVentas.route("/ventas/:id").delete((req, res) => {
-  eliminarVentas(req.params.id, genericCallback(res));
+  crearVentas(req.body, genericCallback(res));
 });
 
 export default rutasVentas;
