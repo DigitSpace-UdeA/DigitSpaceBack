@@ -5,7 +5,7 @@ import Express from 'express';
 import { MongoClient, ObjectId } from 'mongodb';
 import Cors from 'cors'
 import jwt_decode from 'jwt-decode';
-
+// import autorizacionEstado from './autorizacionEstado.js';
 //-------------Oauth-------------------
 import jwt from 'express-jwt';
 import jwks from 'jwks-rsa';
@@ -26,7 +26,7 @@ const client = new MongoClient(stringConexion,{
 const app = Express();
 app.use(Express.json());
 app.use(Cors())
-
+// app.use(autorizacionEstado);
 //-------------Oauth-------------------
 // 4
 var jwtCheck = jwt({
@@ -43,9 +43,44 @@ var jwtCheck = jwt({
 
 app.use(jwtCheck);
 
+// -------------------Autorizacion estado carptea-------------
+const autorizacionEstado = async (req, res, next) =>{
+    //1
+    const token = req.headers.authorization.split('Bearer')[1];
+    const user = jwt_decode(token)['http://localhost/userData'];
+    console.log(user);
+    // verificar si el usuario esta en db o no
+    //const baseDeDatos = getDB();
+    await baseDeDatos.collection('Usuarios').findOne({email: user.email}, async (err, response) =>{
+    // si el usuario ya esta en db devulve la info de usuario
+        if(response){
+            console.log(response);
+            if(response.estado==='No Autorizado'|| response.estado=== 'Pendiente' ){
+               res.sendStatus(401);
+               res.end();
+            }else{
+                console.log('habilitado')
+                next();
+            }
+            }else{
+                next();
+            }
+        }
+    );
+    console.log('autorixacion')
+    
+    //""
+} 
+
+
+
+
+
+
+
 //--------------Oauth-----------------------
 
-
+app.use(autorizacionEstado);
 
 // se hace una ruta para GET o READ, y la ruta que se es /productos
 app.get('/productos', (req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
@@ -209,6 +244,9 @@ app.get('/moduloUsuarios/self', (req,res)=>{ // notese que aquí es donde se def
 });
 
 //-----------------usuarios get rutas -----------------------
+export const getDB = () => {
+    return baseDeDatos;
+};
 
 //-----------------usuarios get controller -----------------------
 
@@ -229,7 +267,8 @@ const consultarOCrearUsuario = async (req, callBack) =>{
         } else{
             user.auth0ID = user._id;
             delete user._id;
-            user.rol = 'Inactivo';
+            user.rol = 'Sin rol';
+            user.estado= 'Pendiente';
             // user.name = usuario;
             await crearUsuario(user,(err, respuesta)=> callBack(err, user ));
             
@@ -240,6 +279,12 @@ const consultarOCrearUsuario = async (req, callBack) =>{
 };
 
 //-----------------usuarios get controller -----------------------
+
+
+
+
+
+
 
 
 
