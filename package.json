@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon ServerDavid.js"
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.8.0",
