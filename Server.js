@@ -7,10 +7,6 @@ import rutasProductos from './Views/Productos/Rutas.js';
 import rutasUsuarios from "./Views/Usuarios/Rutas.js";
 import { ObjectId } from "mongodb";
 
-import jwt_decode from 'jwt-decode';
-
-
-
 //-------------Oauth-------------------
 import jwt from 'express-jwt';
 import jwks from 'jwks-rsa';
@@ -38,39 +34,10 @@ var jwtCheck = jwt({
 });
 
 app.use(jwtCheck);
-// -------------------Autorizacion estado carptea-------------
-const autorizacionEstado = async (req, res, next) =>{
-    //1
-    const token = req.headers.authorization.split('Bearer')[1];
-    const user = jwt_decode(token)['http://localhost/userData'];
-    console.log(user);
-    // verificar si el usuario esta en db o no
-    const baseDeDatos = getDB();
-    await baseDeDatos.collection('Usuarios').findOne({email: user.email}, async (err, response) =>{
-    // si el usuario ya esta en db devulve la info de usuario
-        if(response){
-            console.log(response);
-            if(response.estado==='No Autorizado'|| response.estado=== 'Pendiente' ){
-               res.sendStatus(401);
-               res.end();
-            }else{
-                console.log('habilitado')
-                next();
-            }
-            }else{
-                next();
-            }
-        }
-    );
-    console.log('autorixacion')
-    
-    //""
-} 
+
 //--------------Oauth-----------------------
 
 // Importar las rutas de POST y GET para Ventas, Productos y Usuarios.
-
-app.use(autorizacionEstado);
 app.use(rutasVentas);
 app.use(rutasProductos);
 app.use(rutasUsuarios);
@@ -196,85 +163,6 @@ app.delete("/ventas/eliminar", (req, res) => {
     }
   });
 });
-//----- CREAR USUARIO MÉTODO POST -----------------
-
-const queryAllUsers = async (callback) => {
-    const baseDeDatos = getDB();
-    console.log('query');
-    await baseDeDatos.collection('usuario').find({}).limit(50).toArray(callback);
-  };
-
-
-const crearUsuario = async (datosUsuario, callback) => {
-    const baseDeDatos = getDB();
-    await baseDeDatos.collection('Usuarios').insertOne(datosUsuario, callback);
-  };
-
-//----- CREAR USUARIO MÉTODO POST -----------------
-
-//-----------------usuarios get rutas-----------------------
-
-const genericCallback = (res) => (err, result) => {
-    if (err) {
-      res.status(500).send("Error consultando las ventas.");
-    } else {
-      res.json(result);
-    }
-  };
-
-
-app.get('/moduloUsuarios/self', (req,res)=>{ // notese que aquí es donde se define la ruta que se utiliza en el insomnia, escuchando puerto 5000
-    console.log("alguien hizo get en la ruta /moduloUsuarios/self")
-    //en teoria, esto está llegando de una base de datos y aqui iria la consulta a la BD
-    consultarOCrearUsuario(req, genericCallback(res));
-});
-
-//-----------------usuarios get rutas -----------------------
-// export const getDB = () => {
-//     return baseDeDatos;
-// };
-
-//-----------------usuarios get controller -----------------------
-
-const consultarOCrearUsuario = async (req, callBack) =>{
-    // obtener datos de usuario
-    const token = req.headers.authorization.split('Bearer')[1];
-    const user = jwt_decode(token)['http://localhost/userData'];
-    console.log(user);
-    // verificar si el usuario esta en db o no
-    const baseDeDatos = getDB();
-    await baseDeDatos.collection('Usuarios').findOne({email: user.email}, async (err, response) =>{
-    // si el usuario ya esta en db devulve la info de usuario
-        console.log("response con datos del usuario", response)
-
-        if(response){
-            callBack(err, response)
-            
-        } else{
-            user.auth0ID = user._id;
-            delete user._id;
-            user.rol = 'Sin rol';
-            user.estado= 'Pendiente';
-            // user.name = usuario;
-            await crearUsuario(user,(err, respuesta)=> callBack(err, user ));
-            
-        }
-    });
-    // si el usuario no esta en el db, lo crea y devuelve la info
-
-};
-
-//-----------------usuarios get controller -----------------------
-
-
-
-
-
-
-
-
-
-
 
 const main = () => {    
     app.listen(process.env.PORT, () => {
