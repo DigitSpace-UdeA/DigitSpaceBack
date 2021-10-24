@@ -18,6 +18,8 @@ import jwks from 'jwks-rsa';
 
 dotenv.config({ path: './.env' });
 
+const port = process.env.PORT || 5000;
+
 const app = Express();
 
 app.use(Express.json());
@@ -277,8 +279,8 @@ const consultarOCrearUsuario = async (req, callBack) =>{
 
 
 const main = () => {    
-    app.listen(process.env.PORT, () => {
-        console.log(`Escuchando puerto ${process.env.PORT}`);
+    app.listen(port, () => {
+        console.log(`Escuchando puerto ${port}`);
     });
 };
 
