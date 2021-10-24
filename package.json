@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node ServerDavid.js"
+    "start": "nodemon ServerDavid.js"
   },
   "engines": {
     "node": "14.x"
